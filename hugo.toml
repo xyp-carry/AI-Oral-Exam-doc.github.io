@@ -1,0 +1,30 @@
+# baseURL = ''
+languageCode = 'zh'
+# 💡: 文档名字
+title = 'AI-oral-exam 项目文档'
+
+# (Optional) Set this to true to enable 'Last Modified by' date and git author
+#  information on 'doc' type pages.
+enableGitInfo = true
+
+# (Optional) Theme is intended for documentation use, therefore it doesn't render taxonomy.
+# You can remove related files with config below
+disableKinds = ['taxonomy']
+
+[markup.tableOfContents]
+  startLevel = 1
+
+[[menu.after]]
+  name = '仓库地址'
+  # 💡: 文档仓库地址
+  url = 'https://github.com/xyp-carry/AI-oral-exam'
+  weight = 10
+
+[params]
+  BookTheme = 'auto'
+  BookSection = '*'
+  # 💡: 文档仓库地址
+  BookRepo = 'https://github.com/xyp-carry/AI-oral-exam'
+  BookEditPath = 'edit/main'
+  BookCommitPath = 'commit'
+  BookDateFormat = 'Jan 2, 2006'
