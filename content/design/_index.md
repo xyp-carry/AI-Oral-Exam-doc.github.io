@@ -6,64 +6,46 @@ bookToc: true
 
 # 系统设计
 
-AI-oral-exam 的系统设计围绕“实时口试”展开：用户层提供登录注册、角色区分、学生考试操作和教师监控入口；应用层承载口试管理系统与实时会话系统；基础层提供工具、智能体和监控能力。整体目标是让一次口试能够被创建、执行、记录、评分和复核。
+本页当前只描述考试系统的数据流，并为后续管理系统预留位置。模块细节、接口细节和后续扩展内容暂不展开。
 
-## 总体架构
+## 考试系统
 
-系统可拆分为三层：
+考试系统围绕教师配置、学生口试、材料解析、知识库检索、题目生成和多判官评分组织流程。管理系统暂时只保留位置，后续再补充。
 
-- 用户层：提供多角色分类、登录/注册、学生考试等操作和教师监控入口。
-- 应用层：由口试管理系统和会话系统组成。口试管理系统负责出题、候选人状态维护、面试推进和判卷评分；会话系统负责全双工对话管线、STT 和 TTS。
-- 基础层：提供 Tool、Agent、Monitor 等底层能力，为上层流程提供工具调用、智能体执行和运行监控支撑。
+## 数据流
 
-{{< mermaid >}}
-flowchart TB
-  subgraph UserLayer["用户层"]
-    Role["多角色分类"]
-    Auth["登录/注册"]
-    StudentOps["学生考试等操作"]
-    TeacherMonitor["教师监控"]
-  end
+### 教师配置判定模块
 
-  subgraph AppLayer["应用层"]
-    direction LR
-    subgraph OralManagement["口试管理系统"]
-      ExamSetterAgent["ExamSetterAgent 出题者"]
-      JudgerAgent["JudgerAgent 判卷者"]
-      CandidateStatus["Candidate Status"]
-      Interviewer["Interviewer"]
-    end
+教师可以配置判定模块，包括需要多少个并行评分者、每个评分者关注的评分维度，以及最终如何汇总到一个总评分者上。并行评分者负责从不同角度给出局部判断，总评分者负责整合多路评分结果，形成最终评价。
 
-    subgraph Session["会话系统"]
-      PipelineA["全双工对话可插拔 pipeline"]
-      PipelineB["全双工对话可插拔 pipeline"]
-      More["..."]
-    end
+### 教师上传考试参考文档
 
-    STT["STT"]
-    TTS["TTS"]
-  end
+教师可以上传考试参考文档，系统将这些文档写入 RAG 知识库。口试过程中，出题与判定可以从知识库中检索课程背景、实验要求、参考答案或相关问题说明，为问题生成和评分提供依据。
 
-  subgraph BaseLayer["基础层"]
-    Tool["Tool"]
-    Agent["Agent"]
-    Monitor["Monitor"]
-  end
+### 教师设计题目类型维度
 
-  UserLayer -->|"配置"| OralManagement
-  UserLayer --> Session
-  OralManagement --> Agent
-  OralManagement --> Tool
-  Session --> STT
-  Session --> TTS
-  STT --> Tool
-  TTS --> Tool
-  Tool --> Agent
-  Agent --> Monitor
-{{< /mermaid >}}
+教师可以设计题目类型维度，例如基础概念、实验过程、代码理解、结果分析、扩展思考等。学生后续通过通信系统进行问答时，系统会按这些维度组织问题与追问。
 
-## 子页面
+### 学生通信问答
 
-- [实时语音链路 Pipecat](pipecat/)：说明会话系统如何通过可插拔 pipeline 组织 STT、LLM、TTS 与 WebRTC 实时交互。
-- [多智能体分工](agents/)：说明 ExamSetterAgent、JudgerAgent、Interviewer 等智能体在口试中的职责边界。
-- [口试管理系统](oral-management/)：说明口试管理系统中的业务角色、候选人状态、工具能力和运行监控。
+学生通过通信系统参与口试。通信系统按照教师设计的题目维度推进问答过程，并把学生回答传递给后续判定流程。
+
+### 学生上传报告
+
+学生需要上传报告。报告一方面会被拆解为知识库内容，在口试时为个性化提问提供依据；另一方面会被提交给报告评价模型，由报告评价模型对报告本身进行打分。
+
+## 口试流程
+
+口试流程是用户实际参加考试的主要过程。由于 AI 实时生成问题相对缓慢，系统会在考试开始前，根据教师设计的 N 个题目维度提前生成并预存一批问题，放入问题池中。
+
+![口试流程](../img/oral-exam-process.png)
+
+用户回答完当前问题后，系统会从问题池获取下一道题并通过 TTS 弹出给用户；同时，用户的回答会被提交到 AI workflow 中。也就是说，在同学回答问题的过程中，AI workflow 会并行生成后续数据和问题，尽量减少用户等待时间。
+
+当问题池中已有可用问题时，系统直接弹出下一题；如果问题池暂时没有数据，则等待 AI workflow 产出新问题后再继续弹出。考试结束条件包括达到预设边界值，或评分结果已经趋于稳定。
+
+本节只描述口试流程的整体运行方式，STT、LLM、TTS、问题池、分判官、总判官、出题者和结束条件的具体细节后续再补充。
+
+### 待补充流程
+
+此处预留后续数据流位置。
