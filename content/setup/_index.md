@@ -1,6 +1,6 @@
 ---
 title: 本地运行
-weight: 20
+weight: 60
 bookToc: false
 ---
 
