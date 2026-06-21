@@ -10,7 +10,7 @@ bookToc: true
 
 ## 口试模块数据流
 
-![口试模块数据流](/img/ai-oral-exam-flow.png)
+![口试模块数据流](../../img/ai-oral-exam-flow.png)
 
 ### 教师配置判定模块
 
@@ -32,7 +32,7 @@ bookToc: true
 
 口试流程是用户实际参加考试的主要过程。由于 AI 实时生成问题相对缓慢，系统会在考试开始前，根据教师设计的 N 个题目维度提前生成并预存一批问题，放入问题池中。
 
-![口试流程](/img/oral-exam-process.png)
+![口试流程](../../img/oral-exam-process.png)
 
 用户回答完当前问题后，系统会从问题池获取下一道题并通过 TTS 弹出给用户；同时，用户的回答会被提交到 AI workflow 中。也就是说，在同学回答问题的过程中，AI workflow 会并行生成后续数据和问题，尽量减少用户等待时间。
 
