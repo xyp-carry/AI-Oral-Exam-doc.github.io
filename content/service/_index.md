@@ -11,7 +11,7 @@ bookToc: true
 - [口试模块](oral-exam/)：负责口试配置、问题生成、问答状态、动态评分和口试文件管理。
 - [管理模块](management/)：负责课程、考试、口试记录和角色权限等后台管理能力。
 
-![服务层在系统架构中的位置](/img/system-architecture.png)
+![服务层在系统架构中的位置](../img/system-architecture.png)
 
 ## 服务边界
 
