@@ -11,7 +11,6 @@ bookToc: false
 ## 前置条件
 
 - 安装并启动 [Docker Desktop](https://www.docker.com/products/docker-desktop/)（Windows/macOS），或安装 Docker Engine 与 Compose 插件（Linux）。
-- 仓库根目录自带 `.env` 配置文件，包含大模型等服务地址与密钥。如需使用自己的模型服务，编辑其中 `MODEL_URL`、`MODEL_API_KEY`、`DEEPSEEK_API_KEY`、`KIMI_API_KEY` 等字段。
 
 ## 一键部署
 
