@@ -28,22 +28,21 @@ AI-oral-exam 试图解决这个矛盾：让 AI 先承担标准化、可重复、
 
 ## 系统架构图
 
-![AI-oral-exam 系统架构图](img/system-architecture.png)
+![AI-oral-exam 系统架构图](img/system-architecture-current.svg)
 
 ## 架构概览
 
-系统分为交互层、通信层、服务层、基础设施和数据层。交互层由 React 和 React Router DOM 提供页面与路由能力；通信层负责 WebRTC、pipeline、TTS 和 STT；服务层包含口试模块和管理模块；基础设施提供 Agents、Tools 和全程监控；数据层由 Mysql 和 Meilisearch 提供存储与检索能力。
+学生端通过 Pipecat 实时口试链路参加考试，教师端通过 FastAPI 管理课程、考试和材料，也可接入实时语音。口试核心服务按教师配置运行 A/B/C 模式，并调用智能体、文档解析、代码分析与 RAG 检索完成追问、评分和报告生成。课程、考试会话、成绩与报告存入 MySQL；资料检索使用 FAISS 本地索引，仓库缓存、C 模式记录和音频使用文件存储。
 
-- 交互层：由 React 和 React Router DOM 构成，负责页面展示、路由组织和用户操作入口。
-- 通信层：负责实时口试通信，包括 WebRTC、pipeline、TTS 和 STT。
-- 服务层：包含[口试模块](service/oral-exam/)和[管理模块](service/management/)。口试模块负责打分规则、出题规则、口试状态维护和口试文件管理；管理模块负责课程管理、考试管理、口试记录管理和角色管理。
-- 基础设施：提供 Agents、Tools 和全程监控能力(暂时停用)。
-- 数据层：使用 Mysql 和 Meilisearch 存储业务数据与检索数据。
+- 使用者与入口：学生端进入考试并语音作答；教师端配置课程、考试与材料，复核口试结果。
+- 接入与运行：Pipecat Pipeline 处理实时传输、STT 和 TTS；FastAPI 提供管理与控制 API，维护身份权限和会话状态。
+- 业务核心与智能能力：[口试核心服务](service/oral-exam-core/)按教师配置选择[考试模式](service/oral-exam-core/exam-modes/)，当前详细说明[C 模式](service/oral-exam-core/exam-modes/c/)；[实施口试链路](service/oral-exam/)承接实际问答，[管理模块](service/management/)支持教师侧业务操作。
+- 数据与文件：MySQL 保存业务记录，FAISS 本地索引支持资料检索，文件存储保存仓库缓存、C 模式记录和音频。
 
 ## 当前文档结构
 
 - [通信层](communication/)：说明 Pipecat、WebRTC、Pipeline、STT 和 TTS 的通信链路设计。
-- [服务层](service/)：包含口试模块与管理模块两个页面，说明核心业务模块的边界与配置。
+- [服务层](service/)：包含口试核心服务、考试模式、实施口试链路与管理模块，说明核心业务流程及职责。
 - [Agents](agents/)：说明出题、阶段评分、评分汇总和报告评价等智能体职责。
 - [Tool 集合](tools/)：说明代码分析、仓库获取、文件解析、知识入库和知识检索等基础工具能力。
 - [本地运行](setup/)：后续完成。

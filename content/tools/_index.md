@@ -14,13 +14,17 @@ Tool 是考试系统中的基础能力集合，负责把外部材料、代码仓
 
 ## code_analysis
 
-`code_analysis` 用于读取和理解学生提交的代码内容。代码分析结果可以被出题者用于查看代码、生成问题，也可以为后续判定提供代码层面的依据。
-
-`code_analysis` 由 `ast_tool`、`lsp_tool` 和 `code_reader` 构成：
+`code_analysis`分为两种模式，如果是识别python项目，可以用`ast_tool`、`lsp_tool` 和 `code_reader` 构成的`code_analysis` 直接读取和理解可运行的代码内容。
 
 - `ast_tool`：负责读取单个文件的语法树，以便快速获取文件中的函数、类或其他关键结构。
 - `lsp_tool`：负责获取整个项目的 `project_map`，也可以获取某个函数的符号引用，用于快速预览项目结构或获取跨文件引用信息。
-- `code_reader`：负责读取文件的某几行内容，用于在定位到目标代码后进一步查看代码细节。
+- `code_reader`：负责读取文件的某几行内容，用于在定位到目标代码后进一步查看代码细节。(因为LSP和AST都是返回文件路径和行号，所以code_reader的参数是文件路径和行号。)
+
+如果识别rust、c等项目，需要提前编译或者无法运行的代码，则只能使用
+- `code_search`: 负责在代码文件中检索相应的字符串上下文。
+
+- `code_file_read`: 
+
 
 ## git_tool
 

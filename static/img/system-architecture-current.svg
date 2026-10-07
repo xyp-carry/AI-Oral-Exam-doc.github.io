@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1160" viewBox="0 0 1600 1160" role="img" aria-labelledby="title desc">
+  <title id="title">AI 口试系统当前架构图</title>
+  <desc id="desc">学生端接入 Pipecat 实时口试链路；教师端通过管理 API 配置考试编排，也可通过 Pipecat 进行实时语音交互。业务汇入 A B C 模式的口试流程和智能体工具，数据保存在 MySQL、FAISS 与文件存储中。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fbff"/><stop offset="1" stop-color="#edf3fb"/></linearGradient>
+    <linearGradient id="student" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eef5ff"/><stop offset="1" stop-color="#e7f0ff"/></linearGradient>
+    <linearGradient id="teacher" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0f9f7"/><stop offset="1" stop-color="#e7f6f3"/></linearGradient>
+    <filter id="shadow" x="-15%" y="-30%" width="130%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="12" flood-color="#243a5e" flood-opacity=".09"/></filter>
+    <marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2 L10 6 L2 10" fill="none" stroke="#8299bb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <style><![CDATA[
+      text { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "Arial", sans-serif; fill:#18304d; }
+      .eyebrow { font-size:17px; font-weight:700; letter-spacing:2px; fill:#4e70a8; }
+      .title { font-size:46px; font-weight:800; fill:#152844; }
+      .subtitle { font-size:20px; fill:#58708f; }
+      .section { font-size:17px; font-weight:700; fill:#5b7395; letter-spacing:1px; }
+      .card-title { font-size:27px; font-weight:800; }
+      .card-sub { font-size:17px; fill:#607794; }
+      .tile-title { font-size:19px; font-weight:700; }
+      .tile-sub { font-size:15px; fill:#647b98; }
+      .chip { font-size:16px; font-weight:600; }
+      .data-title { font-size:23px; font-weight:800; }
+      .data-sub { font-size:16px; fill:#627996; }
+      .footer { font-size:15px; fill:#7185a0; }
+    ]]></style>
+  </defs>
+
+  <rect width="1600" height="1160" fill="url(#bg)"/>
+  <circle cx="1515" cy="20" r="220" fill="#dae7fb" opacity=".35"/>
+  <circle cx="-110" cy="1090" r="240" fill="#d9efea" opacity=".32"/>
+  <rect x="80" y="43" width="328" height="34" rx="17" fill="#e3ecfb"/>
+  <text x="100" y="66" class="eyebrow" style="font-size:14px">AI ORAL EXAM · CURRENT SYSTEM</text>
+  <text x="80" y="133" class="title">AI 口试系统 · 当前架构</text>
+  <text x="82" y="166" class="subtitle">从实时语音交互，到考试编排、智能体辅助与持久化</text>
+
+  <text x="80" y="207" class="section">01  使用者与入口</text>
+  <rect x="80" y="225" width="700" height="100" rx="24" fill="url(#student)" stroke="#cadbfa" filter="url(#shadow)"/>
+  <circle cx="135" cy="275" r="28" fill="#3d6fe0"/>
+  <text x="135" y="283" text-anchor="middle" style="fill:white;font-size:23px;font-weight:700">学</text>
+  <text x="184" y="268" class="card-title">学生端</text>
+  <text x="184" y="297" class="card-sub">进入考试 · 语音作答 · 查看题目与反馈</text>
+  <rect x="820" y="225" width="700" height="100" rx="24" fill="url(#teacher)" stroke="#c9e9e2" filter="url(#shadow)"/>
+  <circle cx="875" cy="275" r="28" fill="#1a9d8d"/>
+  <text x="875" y="283" text-anchor="middle" style="fill:white;font-size:23px;font-weight:700">师</text>
+  <text x="924" y="268" class="card-title">教师 / 管理端</text>
+  <text x="924" y="297" class="card-sub">配置课程与考试 · 管理材料 · 复核口试结果</text>
+
+  <path d="M430 326 V373" fill="none" stroke="#8299bb" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M920 326 V351 H700 V373" fill="none" stroke="#1a9d8d" stroke-width="2.5" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+  <text x="810" y="343" text-anchor="middle" class="tile-sub" style="font-size:13px;fill:#168779">可选语音接入</text>
+  <path d="M1170 326 V373" fill="none" stroke="#8299bb" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <text x="80" y="365" class="section">02  接入与运行</text>
+  <rect x="80" y="383" width="700" height="237" rx="26" fill="#fff" stroke="#d7e2f0" filter="url(#shadow)"/>
+  <rect x="80" y="383" width="700" height="8" rx="4" fill="#3d6fe0"/>
+  <text x="110" y="430" class="card-title">实时口试链路</text>
+  <text x="750" y="429" text-anchor="end" class="card-sub">Pipecat Pipeline</text>
+  <rect x="110" y="455" width="195" height="100" rx="17" fill="#f0f5ff" stroke="#d8e4fb"/>
+  <text x="128" y="490" class="tile-title">实时传输</text>
+  <text x="128" y="518" class="tile-sub">WebRTC / Daily</text>
+  <text x="128" y="540" class="tile-sub">WebSocket 接入</text>
+  <rect x="322" y="455" width="195" height="100" rx="17" fill="#f0f5ff" stroke="#d8e4fb"/>
+  <text x="340" y="490" class="tile-title">语音识别</text>
+  <text x="340" y="518" class="tile-sub">FunASR VAD</text>
+  <text x="340" y="540" class="tile-sub">SenseVoice STT</text>
+  <rect x="534" y="455" width="216" height="100" rx="17" fill="#f0f5ff" stroke="#d8e4fb"/>
+  <text x="552" y="490" class="tile-title">语音播报</text>
+  <text x="552" y="518" class="tile-sub">可配置 TTS 后端</text>
+  <text x="552" y="540" class="tile-sub">MiniMax / 豆包 / 本地</text>
+  <text x="110" y="592" class="card-sub">音频输入 → 文字理解与口试逻辑 → 合成语音输出</text>
+
+  <rect x="820" y="383" width="700" height="237" rx="26" fill="#fff" stroke="#d7e2f0" filter="url(#shadow)"/>
+  <rect x="820" y="383" width="700" height="8" rx="4" fill="#1a9d8d"/>
+  <text x="850" y="430" class="card-title">管理与控制 API</text>
+  <text x="1490" y="429" text-anchor="end" class="card-sub">FastAPI · 身份认证</text>
+  <rect x="850" y="455" width="195" height="100" rx="17" fill="#effaf7" stroke="#d3eee6"/>
+  <text x="868" y="490" class="tile-title">课程与考试</text>
+  <text x="868" y="518" class="tile-sub">规则 / 题库 / 材料</text>
+  <text x="868" y="540" class="tile-sub">考试配置与发布</text>
+  <rect x="1062" y="455" width="195" height="100" rx="17" fill="#effaf7" stroke="#d3eee6"/>
+  <text x="1080" y="490" class="tile-title">身份与权限</text>
+  <text x="1080" y="518" class="tile-sub">用户 / 角色 / 课程</text>
+  <text x="1080" y="540" class="tile-sub">访问范围校验</text>
+  <rect x="1274" y="455" width="216" height="100" rx="17" fill="#effaf7" stroke="#d3eee6"/>
+  <text x="1292" y="490" class="tile-title">会话运行状态</text>
+  <text x="1292" y="518" class="tile-sub">Pipeline ID 绑定</text>
+  <text x="1292" y="540" class="tile-sub">心跳租约与清理</text>
+  <text x="850" y="592" class="card-sub">统一管理考试生命周期与教师侧业务操作</text>
+
+  <path d="M430 621 V668" fill="none" stroke="#8299bb" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1170 621 V642 H625 V668" fill="none" stroke="#1a9d8d" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <text x="80" y="660" class="section">03  业务核心与智能能力</text>
+  <rect x="80" y="678" width="1440" height="249" rx="26" fill="#fff" stroke="#d7e2f0" filter="url(#shadow)"/>
+  <text x="110" y="718" class="card-title">口试核心服务</text>
+  <text x="1490" y="718" text-anchor="end" class="card-sub">考试过程、AI 决策与教师复核形成闭环</text>
+
+  <rect x="110" y="741" width="650" height="151" rx="19" fill="#f4f6ff" stroke="#e0e2fb"/>
+  <rect x="110" y="741" width="6" height="151" rx="3" fill="#7666d9"/>
+  <text x="138" y="780" class="tile-title" style="font-size:23px">教师配置考试编排 · A / B / C 模式</text>
+  <text x="138" y="810" class="tile-sub" style="font-size:17px">题目与规则由教师配置；系统执行追问、评分与报告生成</text>
+  <rect x="138" y="834" width="115" height="33" rx="16" fill="#e7e8fb"/><text x="195" y="856" text-anchor="middle" class="chip" fill="#6655b9">考试状态</text>
+  <rect x="267" y="834" width="124" height="33" rx="16" fill="#e7e8fb"/><text x="329" y="856" text-anchor="middle" class="chip" fill="#6655b9">动态追问</text>
+  <rect x="405" y="834" width="125" height="33" rx="16" fill="#e7e8fb"/><text x="467" y="856" text-anchor="middle" class="chip" fill="#6655b9">评分评审</text>
+  <rect x="544" y="834" width="176" height="33" rx="16" fill="#e7e8fb"/><text x="632" y="856" text-anchor="middle" class="chip" fill="#6655b9">最终报告</text>
+
+  <path d="M775 817 H825" fill="none" stroke="#8b9bbc" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M825 832 H775" fill="none" stroke="#8b9bbc" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="840" y="741" width="650" height="151" rx="19" fill="#f8f5ff" stroke="#e9e1fb"/>
+  <rect x="840" y="741" width="6" height="151" rx="3" fill="#aa75ce"/>
+  <text x="868" y="780" class="tile-title" style="font-size:23px">智能体与分析工具</text>
+  <text x="868" y="810" class="tile-sub" style="font-size:17px">出题、追问、评价 Agent 调用材料和代码分析能力</text>
+  <rect x="868" y="834" width="158" height="33" rx="16" fill="#efe5fa"/><text x="947" y="856" text-anchor="middle" class="chip" fill="#8757b5">LLM Agents</text>
+  <rect x="1040" y="834" width="126" height="33" rx="16" fill="#efe5fa"/><text x="1103" y="856" text-anchor="middle" class="chip" fill="#8757b5">文档解析</text>
+  <rect x="1180" y="834" width="126" height="33" rx="16" fill="#efe5fa"/><text x="1243" y="856" text-anchor="middle" class="chip" fill="#8757b5">代码分析</text>
+  <rect x="1320" y="834" width="134" height="33" rx="16" fill="#efe5fa"/><text x="1387" y="856" text-anchor="middle" class="chip" fill="#8757b5">RAG 检索</text>
+
+  <path d="M300 928 V973" fill="none" stroke="#8299bb" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M800 928 V973" fill="none" stroke="#8299bb" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1300 928 V973" fill="none" stroke="#8299bb" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <text x="80" y="965" class="section">04  数据与文件</text>
+  <rect x="80" y="983" width="450" height="119" rx="22" fill="#fff" stroke="#d7e2f0" filter="url(#shadow)"/>
+  <rect x="80" y="983" width="7" height="119" rx="3" fill="#3573d7"/>
+  <text x="110" y="1027" class="data-title">MySQL</text>
+  <text x="110" y="1060" class="data-sub">课程、考试会话、成绩与报告</text>
+  <rect x="575" y="983" width="450" height="119" rx="22" fill="#fff" stroke="#d7e2f0" filter="url(#shadow)"/>
+  <rect x="575" y="983" width="7" height="119" rx="3" fill="#18a08e"/>
+  <text x="605" y="1027" class="data-title">FAISS 本地索引</text>
+  <text x="605" y="1060" class="data-sub">资料向量与检索元数据</text>
+  <rect x="1070" y="983" width="450" height="119" rx="22" fill="#fff" stroke="#d7e2f0" filter="url(#shadow)"/>
+  <rect x="1070" y="983" width="7" height="119" rx="3" fill="#d99342"/>
+  <text x="1100" y="1027" class="data-title">文件存储</text>
+  <text x="1100" y="1060" class="data-sub">仓库缓存、C 模式记录与音频</text>
+
+  <text x="80" y="1138" class="footer">依据当前后端代码绘制 · Web 界面作为外部接入方展示 · 未包含已停用的全程监控</text>
+</svg>
