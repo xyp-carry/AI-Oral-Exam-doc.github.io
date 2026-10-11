@@ -36,13 +36,13 @@ AI-oral-exam 试图解决这个矛盾：让 AI 先承担标准化、可重复、
 
 - 使用者与入口：学生端进入考试并语音作答；教师端配置课程、考试与材料，复核口试结果。
 - 接入与运行：Pipecat Pipeline 处理实时传输、STT 和 TTS；FastAPI 提供管理与控制 API，维护身份权限和会话状态。
-- 业务核心与智能能力：[口试核心服务](service/oral-exam-core/)按教师配置选择[考试模式](service/oral-exam-core/exam-modes/)，当前详细说明[C 模式](service/oral-exam-core/exam-modes/c/)；[实施口试链路](service/oral-exam/)承接实际问答，[管理模块](service/management/)支持教师侧业务操作。
+- 业务核心与智能能力：[口试核心服务](service/oral-exam-core/)按教师配置选择[考试模式](service/oral-exam-core/exam-modes/)，当前详细说明[C 模式](service/oral-exam-core/exam-modes/c/)；[管理模块](service/management/)支持教师侧业务操作。
 - 数据与文件：MySQL 保存业务记录，FAISS 本地索引支持资料检索，文件存储保存仓库缓存、C 模式记录和音频。
 
 ## 当前文档结构
 
 - [通信层](communication/)：说明 Pipecat、WebRTC、Pipeline、STT 和 TTS 的通信链路设计。
-- [服务层](service/)：包含口试核心服务、考试模式、实施口试链路与管理模块，说明核心业务流程及职责。
+- [服务层](service/)：包含口试核心服务、考试模式与管理模块，说明核心业务流程及职责。
 - [Agents](agents/)：说明出题、阶段评分、评分汇总和报告评价等智能体职责。
 - [Tool 集合](tools/)：说明代码分析、仓库获取、文件解析、知识入库和知识检索等基础工具能力。
 - [本地运行](setup/)：基于 Docker Compose 的一键部署与访问方式。
